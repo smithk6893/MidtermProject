@@ -19,6 +19,14 @@ $quote = new Quote($db);
 //Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
 
+
+if(! isset($data->quote) or ! isset($data->author_id) or ! isset($data->category_id)) {
+    echo json_encode(
+        array('message' => 'Missing Required Parameters')
+    );
+    exit();
+}
+
 //Set ID to update
 $quote->id = $data->id;
 $quote->quote = $data->quote;
@@ -32,6 +40,6 @@ if($quote->update()) {
     );
 } else {
     echo json_encode(
-        array('message' => 'Missing Required Parameters')
+        array('message' => 'No Quotes Found')
     );
 }
